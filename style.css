@@ -1,0 +1,581 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    background-color:#EEE;
+    font-family:'Lato',Helvetica,Arial;
+    font-size:15px;
+    display:flex;
+    margin:0;
+    min-height:100vh;
+}
+.models {
+    display:none;
+}
+
+header {
+    position: fixed;
+    left:0;
+    top:0;
+    right:0;
+    height:60px;
+    background-color:goldenrod;
+    display:none;
+    justify-content: flex-end;
+    align-items: center;
+}
+.menu-openner {
+    margin-right: 15px;
+    font-size: 20px;
+    background-color: gold;
+    padding: 5px 30px;
+    border-radius: 5px;
+     
+}
+.menu-openner span {
+    margin-right:10px;
+}
+.menu-openner i { 
+    font-size: 14pt;
+}
+.menu-closer {
+    width:32px;
+    height:32px;
+    display:none;
+    font-size: 30px;
+}
+
+aside {
+    background-color:whitesmoke;
+    width:0vw;
+    font-family:'Hepta Slab', Helvetica, Arial;
+    transition:all ease .2s;
+    overflow-x:hidden;
+}
+aside.show {
+    width:30vw;
+}
+.cart--area {
+    padding:20px;
+}
+main {
+    flex:1;
+    padding:20px;
+}
+h1 {
+    font-family:'Hepta Slab', Helvetica, Arial;
+} 
+/* Estilo para o título */
+.site-title {
+    font-family: 'Arial', sans-serif; /* Fonte moderna e limpa */
+    font-size: 3rem; /* Tamanho grande para o título */
+    color: #D4AF37; /* Cor dourada */
+    text-align: center; /* Alinha o título no centro */
+    text-transform: uppercase; /* Texto em maiúsculas */
+    letter-spacing: 3px; /* Aumenta o espaçamento entre as letras */
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.15); /* Sombra suave */
+    transition: transform 0.3s ease, color 0.3s ease;
+    margin-top: 20px;
+}
+
+/* Efeito de hover para o título */
+.site-title:hover {
+    color: #C99700; /* Um tom mais escuro de dourado */
+    transform: scale(1.1); /* Leve aumento no tamanho */
+}
+
+/* Estilo para o texto do subtítulo */
+.promo-text {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.25rem; /* Tamanho do texto */
+    color: #333; /* Cor escura para o contraste com o fundo branco */
+    text-align: center; /* Alinha o texto no centro */
+    margin-top: 10px;
+    font-weight: bold; /* Deixa o texto em negrito para destacar */
+    transition: color 0.3s ease;
+}
+
+/* Efeito de hover para o texto do subtítulo */
+.promo-text:hover {
+    color: #D4AF37; /* Muda para a cor dourada ao passar o mouse */
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+    .site-title {
+        font-size: 2.5rem; /* Tamanho reduzido em telas pequenas */
+        letter-spacing: 2px;
+    }
+
+    .promo-text {
+        font-size: 1rem; /* Tamanho menor para o subtítulo */
+    }
+}
+
+
+.pizza-area {
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+.pizza-item {
+    text-align: center;
+    max-width:250px;
+    font-family:'Hepta Slab', Helvetica, Arial;
+    margin:0 auto 50px auto;
+    border: 3px solid gold;
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+}
+.pizza-item a {
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    text-decoration: none;
+    transition: transform 0.3s ease; /* Transição suave para o efeito de escala */
+}
+.pizza-item--img {
+    width:200px;
+    height:200px;
+    background-color:#EEE;
+    border-radius:100px;
+    box-shadow:0px 10px 50px rgba(0, 0, 0, 0.2);
+}
+.pizza-item--img img {
+    width:100%;
+    height:auto;
+}
+.pizza-item--add {
+    width:50px;
+    height:50px;
+    line-height:50px;
+    border-radius:25px;
+    background-color:gold;
+    text-align:center;
+    color:#FFF;
+    font-size:22px;
+    cursor:pointer;
+    margin-top:-25px;
+    transition:all ease .2s;
+} 
+ 
+
+.pizza-item a:hover .pizza-item--add {
+    background-color: rgb(255, 213, 28);
+    transform: scale(1.1); /* Aumenta o botão em 10% */
+}
+
+.pizza-item--price {
+    font-size:15px;
+    color:#333;
+    margin-top:5px;
+}
+.pizza-item--name {
+    font-size:20px;
+    font-weight: bold;
+    color:#000;
+    margin-top:5px;
+}
+.pizza-item--desc {
+    font-size:13px;
+    color:#555;
+    margin-top:10px;
+}
+
+.pizzaWindowArea {
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    right:0;
+    background-color:rgba(204, 199, 199, 0.5);
+    display:none;
+    transition: all ease .5s;
+    justify-content: center;
+    align-items: center;
+    overflow-y:auto;
+}
+.pizzaWindowBody {
+    width:900px;
+    background-color:#FFF;
+    border-radius:10px;
+    box-shadow:0px 0px 15px #999;
+    display:flex;
+    margin:20px 0px;
+}
+.pizzaBig {
+    flex:1;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.pizzaBig--back {
+    position:absolute;
+    width:30px;
+    height:30px;
+    background-color:#000;
+}
+.pizzaBig img {
+    height:400px;
+    width:auto;
+}
+.pizzaInfo {
+    flex:1;
+    font-family:'Hepta Slab', Helvetica, Arial;
+    padding-bottom:50px;
+}
+.pizzaInfo h1 {
+    margin-top:50px;
+}
+.pizzaInfo .pizzaInfo--desc {
+    font-size:15px;
+    color:#999;
+    margin-top:10px;
+    font-family:'Lato',Helvetica,Arial;
+}
+.pizzaInfo--sector {
+    color:#CCC;
+    text-transform: uppercase;
+    font-size:14px;
+    margin-top:30px;
+    margin-bottom:10px;
+}
+.pizzaInfo--sizes {
+    display:inline-flex;
+    border-radius:10px;
+    overflow:hidden;
+}
+.pizzaInfo--size {
+    padding:10px 15px;
+    color:#000;
+    background-color:#EEE;
+    font-size:13px;
+    font-weight: bold;
+    cursor:pointer;
+}
+.pizzaInfo--size:hover {
+    background-color:#CCC;
+}
+.pizzaInfo--size.selected {
+    background-color:rgb(100, 100, 96);
+    color:#FFF;
+}
+.pizzaInfo--size.selected span {
+    color:#D6D6D6;
+}
+.pizzaInfo--size span {
+    font-size:12px;
+    color:#999;
+    font-weight: normal;
+}
+.pizzaInfo--price {
+    display:flex;
+    align-items:center;
+}
+.pizzaInfo--actualPrice {
+    font-size:28px;
+    margin-right:30px;
+}
+.pizzaInfo--qtarea {
+    display:inline-flex;
+    background-color:#EEE;
+    border-radius:10px;
+    height:30px;
+}
+.pizzaInfo--qtarea button {
+    border:0;
+    background-color:transparent;
+    font-size:17px;
+    outline:0;
+    cursor:pointer;
+    padding:0px 10px;
+    color:#333;
+}
+.pizzaInfo--qt {
+    line-height: 30px;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 0px 5px;
+    color:#000;
+}
+.pizzaInfo--addButton {
+    margin-top:30px;
+    padding:20px 30px;
+    border-radius:20px;
+    background-color:#48d05f;
+    color:#FFF;
+    display:inline-block;
+    cursor:pointer;
+    margin-right:30px;
+}
+.pizzaInfo--addButton:hover {
+    background-color:#32a345;
+}
+.pizzaInfo--cancelButton {
+    display:inline-block;
+    cursor:pointer;
+}
+.pizzaInfo--cancelMobileButton {
+    display:none;
+    height:40px;
+    text-align:center;
+    line-height: 40px;
+    margin-bottom:30px;
+}
+.cart {
+    margin-bottom:20px;
+}
+.cart--item {
+    display:flex;
+    align-items:center;
+    margin:10px 0;
+}
+.cart--item img {
+    width:40px;
+    height:40px;
+    margin-right:20px;
+}
+.cart--item-nome {
+    flex:1;
+}
+.cart--item--qtarea {
+    display:inline-flex;
+    background-color:#EEE;
+    border-radius:10px;
+    height:30px;
+}
+.cart--item--qtarea button {
+    border:0;
+    background-color:transparent;
+    font-size:17px;
+    outline:0;
+    cursor:pointer;
+    padding:0px 10px;
+    color:#333;
+}
+.cart--item--qt {
+    line-height: 30px;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 0px 5px;
+    color:#000;
+}
+.cart--totalitem {
+    padding:15px 0;
+    border-top:3px solid gold;
+    color:#315970;
+    display:flex;
+    justify-content: space-between;
+    font-size:15px;
+}
+.cart--totalitem span:first-child {
+    font-weight: bold;
+}
+.cart--totalitem.big {
+    font-size:20px;
+    color:#000;
+    font-weight: bold;
+} 
+
+/* Estilo do botão finalizar compra */
+.cart--finalizar {
+    padding: 20px 30px;
+    border-radius: 20px;
+    background-color: #D4AF37; /* Dourado elegante */
+    color: #FFF; /* Texto branco para contraste */
+    cursor: pointer;
+    text-align: center;
+    margin-top: 20px;
+    border: 2px solid #C5A005; /* Bordas douradas */
+    font-size: 1.2rem; /* Tamanho maior para chamar atenção */
+    font-weight: bold; /* Destaca o texto */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidade */
+    transition: all ease 0.3s; /* Transição suave */
+}
+
+/* Efeito de hover */
+.cart--finalizar:hover {
+    background-color: #C5A005; /* Dourado mais escuro no hover */
+    color: #FFF; /* Mantém o texto branco */
+    transform: scale(1.05); /* Leve aumento no tamanho */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Aumenta a profundidade no hover */
+}
+
+/* Efeito de clique */
+.cart--finalizar:active {
+    transform: scale(0.95); /* Dá um feedback visual ao clicar */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2); /* Reduz a profundidade */
+}
+
+/* Animação pulsante para chamar atenção */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Aplica a animação pulsante */
+.cart--finalizar {
+    animation: pulse 1.5s infinite;
+}
+
+
+@media (max-width:1000px) {
+    .pizza-area {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width:840px) {
+    body {
+        flex-direction: column;
+    }
+    .pizza-area {
+        display:block;
+    }
+    .pizza-item {
+        max-width:100%;
+    }
+    header {
+        display:flex;
+    }
+    main {
+        padding-top:60px;
+    }
+
+    aside {
+        width:auto;
+        position:fixed;
+        left:100vw;
+        right:0;
+        top:0;
+        bottom:0;
+        transition: all ease .2s;
+    }
+    aside.show {
+        width:auto;
+    }
+    .cart--area {
+        width:100vw;
+    }
+
+    .menu-closer {
+        display:block;
+    }
+
+    .pizzaWindowArea {
+        justify-content:flex-start;
+        align-items: flex-start;
+    }
+
+    .pizzaWindowBody {
+        width:100vw;
+        display:block;
+        padding:20px;
+        border-radius:0;
+        box-shadow:none;
+        margin:0;
+    }
+
+    .pizzaBig img {
+        width: 75%;
+        height: auto;
+    }
+
+    .pizzaInfo h1 {
+        margin-top:20px;
+    }
+
+    .pizzaInfo--qtarea {
+        height:60px;
+    }
+    .pizzaInfo--qtarea button {
+        font-size:25px;
+        padding:0px 25px;
+    }
+    .pizzaInfo--qt {
+        line-height: 60px;
+        font-size:20px;
+    }
+    .pizzaInfo--addButton {
+        font-size:20px;
+        display:block;
+        text-align:center;
+        margin:30px auto;
+    }
+
+    .pizzaInfo--cancelButton {
+        display:none;
+    }
+    .pizzaInfo--cancelMobileButton {
+        display:block;
+    }
+}
+
+
+/* Estilo para o campo de pesquisa */
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espaçamento entre o input e o ícone */
+    margin: 20px;
+}
+
+.search-bar input {
+    width: 100%;
+    max-width: 300px; /* Largura máxima */
+    padding: 10px 15px;
+    border: 1px solid #ccc; /* Borda cinza clara */
+    border-radius: 25px; /* Borda arredondada */
+    font-size: 16px;
+    outline: none; /* Remove o contorno ao clicar */
+    transition: all 0.3s ease; /* Animação para interação */
+}
+
+.search-bar input:focus {
+    border-color: gold; /* Altera a cor da borda ao focar */
+    box-shadow: 0 0 5px rgba(255, 239, 8, 0.5); /* Efeito de brilho */
+}
+
+ 
+
+
+
+.no-products {
+    display: none; /* Ocultar por padrão */
+    text-align: center;
+    margin-top: 20px;
+    color: #555;
+    font-size: 1.2rem;
+}
+
+.heart-animation {
+    width: 100px;
+    animation: heartbeat 1.5s infinite;
+    margin-bottom: 10px;
+}
+
+@keyframes heartbeat {
+    0% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1.1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    75% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+

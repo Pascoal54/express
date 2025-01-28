@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Netzage Express</title>
+    <link rel="stylesheet" href="style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Link para Remix Icon -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ <!-- Adiciona o CDN da biblioteca jsPDF -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+ 
+ <script src="https://apis.google.com/js/api.js"></script>
+
+ <link rel="stylesheet" href="materialdesignicons.min.css">
+<!--RemixIcon-->
+<link rel="stylesheet" href="remixicon/remixicon.css">
+
+<link rel="stylesheet" href="sweetalert2.min.css">
+<link rel="stylesheet" href="what.css">
+
+<script type="text/javascript"
+src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script type="text/javascript">
+(function(){
+emailjs.init({
+publicKey: "9iFSk62jSK4CwIlZG",
+});
+})();
+</script>
+</head>
+<body>
+      <!-- Botão de WhatsApp -->
+      <a href="#" class="whatsapp-btn" id="whatsappBtn">
+        <i class="ri-whatsapp-line"></i>  
+    </a>
+    <div class="models">
+        <div class="pizza-item">
+            <a href="">
+                <div class="pizza-item--img"><img src="" /></div>
+                <div class="pizza-item--add" title="detalhe do perfume"> <i class="ri-shopping-cart-line"></i></div>
+            </a>
+            <div class="pizza-item--price">Kz --</div>
+            <div class="pizza-item--name">--</div>
+            <div class="pizza-item--desc">--</div>
+        </div>
+        <div class="cart--item">
+            <img src="" />
+            <div class="cart--item-nome">--</div>
+            <div class="cart--item--qtarea">
+                <button class="cart--item-qtmenos"><i class="ri-subtract-line"></i></button>
+                <div class="cart--item--qt">1</div>
+                <button class="cart--item-qtmais"><i class="ri-add-line"></i></button>
+            </div>
+        </div>
+    </div>
+    <header>
+        <!-- Campo de pesquisa com ícone -->
+        <div class="search-bar">
+            <input type="text" placeholder="Pesquise aqui..." id="search-input" />
+        </div>
+        
+        <div class="menu-openner">
+            <span>0</span> 
+            <i class="ri-shopping-cart-line"></i>
+        </div>
+    </header>
+    <main>
+        <h1 class="site-title">Netzage Express</h1>
+<p class="promo-text" style="font-weight: bold; color: #000;">
+    Escolha o seu produto favorito e pague na entrega! 
+    <span style="color: red; font-size: 1.2em; font-weight: bold; border-radius: 5px;">
+        Ganhe 5% de desconto quando o produto chegar na sua casa!
+    </span>
+</p>
+
+        
+        <div class="pizza-area"></div>
+        <div class="no-products">
+            <img src="images/vazio.svg" alt="Coração" class="heart-animation">
+            <p>Esse produto ainda não temos no estoque</p>
+        </div>
+        
+    </main>
+    <aside>
+        <div class="cart--area">
+            <div class="menu-closer"><i class="ri-close-line"></i></div>
+            <h1 >Seu Perfume, Sua Essência</h1>
+            <div class="cart"></div>
+            <div class="cart--details">
+                <div class="cart--totalitem subtotal">
+                    <span>Subtotal</span>
+                    <span>kz --</span>
+                </div>
+                <div class="cart--totalitem desconto">
+                    <span>Desconto (-5%)</span>
+                    <span>kz --</span>
+                </div>
+                <div class="cart--totalitem total big">
+                    <span>Total</span>
+                    <span>kz --</span>
+                </div>
+                <div class="cart--finalizar"><i class="ri-check-double-line"></i> Finalizar a compra</div>
+            </div>
+        </div>
+    </aside>
+    <div class="pizzaWindowArea">
+        <div class="pizzaWindowBody">
+            <div class="pizzaInfo--cancelMobileButton"><i class="ri-arrow-left-line"></i> Voltar</div>
+            <div class="pizzaBig">
+                <img src="" />
+            </div>
+            <div class="pizzaInfo">
+                <h1>--</h1>
+                <div class="pizzaInfo--desc">--</div>
+                <div class="pizzaInfo--sizearea">
+                    <div class="pizzaInfo--sector">Tamanho</div>
+                    <div class="pizzaInfo--sizes">
+                        <div data-key="0" class="pizzaInfo--size">PEQUENA <span>--</span></div>
+                        <div data-key="1" class="pizzaInfo--size">MÉDIO <span>--</span></div>
+                        <div data-key="2" class="pizzaInfo--size selected">GRANDE <span>--</span></div>
+                    </div>
+                </div>
+                <div class="pizzaInfo--pricearea">
+                    <div class="pizzaInfo--sector">Preço</div>
+                    <div class="pizzaInfo--price">
+                        <div class="pizzaInfo--actualPrice">kz --</div>
+                        <div class="pizzaInfo--qtarea">
+                            <button class="pizzaInfo--qtmenos"><i class="ri-subtract-line"></i></button>
+                            <div class="pizzaInfo--qt">1</div>
+                            <button class="pizzaInfo--qtmais"><i class="ri-add-line"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="pizzaInfo--addButton"><i class="ri-shopping-cart-line"></i> Adicionar ao carrinho</div>
+                <div class="pizzaInfo--cancelButton"><i class="ri-close-line"></i> Cancelar</div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+    <script type="text/javascript" src="pizzas.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+    <script>
+        // Verifica se o painel já foi exibido
+        if (!localStorage.getItem('welcomeShown')) {
+          // Exibe o painel de boas-vindas com SweetAlert2
+          Swal.fire({
+            title: 'Bem-vindo à Netzage Express!',
+            html: `
+              <p>Pague apenas na entrega e aproveite os melhores perfumes.</p>
+              <p>Como prefere encomendar?</p>
+            `,
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonText: 'WhatsApp',
+            cancelButtonText: 'Encomendar no Site',
+            confirmButtonColor: '#25D366', /* Verde do WhatsApp */
+            cancelButtonColor: '#D4AF37', /* Dourado para o site */
+            allowOutsideClick: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // Redireciona para o WhatsApp
+              window.location.href = 'https://wa.me/244950354803?text=Olá,%20gostaria%20de%20saber%20mais%20sobre%20os%20produtos%20da%20Netzage%20Express.%20Vi%20as%20informações%20no%20site%20e%20quero%20saber%20mais%20sobre%20vendas%20de%20perfumes%20com%20entrega%20grátis%20em%20todas%20as%20regiões%20de%20Luanda.';
+
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+              // Mostra uma mensagem para pedidos no site
+              Swal.fire({
+                title: 'Pedido no site',
+                text: 'Você pode prosseguir com o pedido diretamente no site.',
+                icon: 'success',
+                confirmButtonColor: '#D4AF37',
+              });
+            }
+          });
+    
+          // Salva no localStorage para não exibir novamente
+          localStorage.setItem('welcomeShown', 'true');
+        }
+      </script>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script src="https://apis.google.com/js/api.js"></script>
+      <script src="sweetalert2.min.js"></script>
+
+</body>
+</html>
+
+
+
+
+ 

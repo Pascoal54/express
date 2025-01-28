@@ -1,0 +1,68 @@
+ /* Estilo do botão */
+.whatsapp-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25D366; /* Cor do WhatsApp */
+    color: white;
+    font-size: 16px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    font-weight: bold;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 1000;
+    overflow: hidden; /* Garante que o efeito de onda não ultrapasse os limites */
+}
+
+.whatsapp-btn i {
+    font-size: 40px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Efeito de onda ao clicar */
+.whatsapp-btn:active {
+    transform: scale(1); /* Retorna ao tamanho original quando pressionado */
+    animation: wave 0.6s ease-out; /* Animação de propagação */
+}
+
+/* Animação de onda */
+@keyframes wave {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
+    }
+    100% {
+        transform: scale(1.4);
+        box-shadow: 0 0 0 30px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* Efeito hover */
+.whatsapp-btn:hover {
+    transform: scale(1.1); /* Animação de aumentar o botão */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Aumenta o efeito de sombra */
+}
+
+/* Suavização do ícone */
+.whatsapp-btn i {
+    animation: bounce 1s infinite alternate;
+}
+
+/* Animação de pulso do ícone */
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-5px);
+    }
+}
