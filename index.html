@@ -1,195 +1,287 @@
-<!DOCTYPE html>
-<html>
+  <!DOCTYPE html>
+<html lang="pt">
 <head>
-    <meta charset="utf-8" />
-    <title>Netzage Express</title>
-    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Link para Remix Icon -->
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
- <!-- Adiciona o CDN da biblioteca jsPDF -->
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
- 
- <script src="https://apis.google.com/js/api.js"></script>
-
- <link rel="stylesheet" href="materialdesignicons.min.css">
-<!--RemixIcon-->
-<link rel="stylesheet" href="remixicon/remixicon.css">
-
-<link rel="stylesheet" href="sweetalert2.min.css">
-<link rel="stylesheet" href="what.css">
-
-<script type="text/javascript"
-src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
-</script>
-<script type="text/javascript">
-(function(){
-emailjs.init({
-publicKey: "9iFSk62jSK4CwIlZG",
-});
-})();
-</script>
+    <title>Netzage Express - Em Atualização</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #000;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+        
+        .maintenance-container {
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+            border: 1px solid #fff;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .maintenance-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent 45%,
+                rgba(255, 255, 255, 0.1) 50%,
+                transparent 55%
+            );
+            animation: shine 3s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes shine {
+            0% { transform: translate(-30%, -30%) rotate(0deg); }
+            100% { transform: translate(30%, 30%) rotate(360deg); }
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .logo {
+            width: 150px;
+            margin-bottom: 30px;
+            filter: invert(1);
+        }
+        
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .countdown-number {
+            font-size: 3rem;
+            font-weight: 700;
+            background: #fff;
+            color: #000;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+        
+        .countdown-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background-color: #333;
+            border-radius: 4px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: #fff;
+            width: 0;
+            transition: width 1s linear;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .social-link {
+            color: #fff;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            transform: translateY(-3px);
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+            
+            .countdown-number {
+                font-size: 2rem;
+                width: 60px;
+                height: 60px;
+            }
+            
+            .countdown-label {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
 </head>
 <body>
-      <!-- Botão de WhatsApp -->
-      <a href="#" class="whatsapp-btn" id="whatsappBtn">
-        <i class="ri-whatsapp-line"></i>  
-    </a>
-    <div class="models">
-        <div class="pizza-item">
-            <a href="">
-                <div class="pizza-item--img"><img src="" /></div>
-                <div class="pizza-item--add" title="detalhe do perfume"> <i class="ri-shopping-cart-line"></i></div>
-            </a>
-            <div class="pizza-item--price">Kz --</div>
-            <div class="pizza-item--name">--</div>
-            <div class="pizza-item--desc">--</div>
-        </div>
-        <div class="cart--item">
-            <img src="" />
-            <div class="cart--item-nome">--</div>
-            <div class="cart--item--qtarea">
-                <button class="cart--item-qtmenos"><i class="ri-subtract-line"></i></button>
-                <div class="cart--item--qt">1</div>
-                <button class="cart--item-qtmais"><i class="ri-add-line"></i></button>
+    <div class="maintenance-container">
+        <img src="https://via.placeholder.com/150x50?text=NETZAGE" alt="Netzage Express" class="logo">
+        <h1>ESTAMOS EM ATUALIZAÇÃO</h1>
+        <p>Estamos trabalhando para melhorar sua experiência. Nosso site estará disponível em:</p>
+        
+        <div class="countdown">
+            <div class="countdown-item">
+                <div class="countdown-number" id="hours">08</div>
+                <div class="countdown-label">Horas</div>
             </div>
-        </div>
-    </div>
-    <header>
-        <!-- Campo de pesquisa com ícone -->
-        <div class="search-bar">
-            <input type="text" placeholder="Pesquise aqui..." id="search-input" />
+            <div class="countdown-item">
+                <div class="countdown-number" id="minutes">00</div>
+                <div class="countdown-label">Minutos</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="seconds">00</div>
+                <div class="countdown-label">Segundos</div>
+            </div>
         </div>
         
-        <div class="menu-openner">
-            <span>0</span> 
-            <i class="ri-shopping-cart-line"></i>
-        </div>
-    </header>
-    <main>
-        <h1 class="site-title">Netzage Express</h1>
-<p class="promo-text" style="font-weight: bold; color: #000;">
-    Escolha o seu produto favorito e pague na entrega! 
-    <span style="color: red; font-size: 1.2em; font-weight: bold; border-radius: 5px;">
-        Ganhe 5% de desconto quando o produto chegar na sua casa!
-    </span>
-</p>
-
-        
-        <div class="pizza-area"></div>
-        <div class="no-products">
-            <img src="images/vazio.svg" alt="Coração" class="heart-animation">
-            <p>Esse produto ainda não temos no estoque</p>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
         </div>
         
-    </main>
-    <aside>
-        <div class="cart--area">
-            <div class="menu-closer"><i class="ri-close-line"></i></div>
-            <h1 >Seu Perfume, Sua Essência</h1>
-            <div class="cart"></div>
-            <div class="cart--details">
-                <div class="cart--totalitem subtotal">
-                    <span>Subtotal</span>
-                    <span>kz --</span>
-                </div>
-                <div class="cart--totalitem desconto">
-                    <span>Desconto (-5%)</span>
-                    <span>kz --</span>
-                </div>
-                <div class="cart--totalitem total big">
-                    <span>Total</span>
-                    <span>kz --</span>
-                </div>
-                <div class="cart--finalizar"><i class="ri-check-double-line"></i> Finalizar a compra</div>
-            </div>
-        </div>
-    </aside>
-    <div class="pizzaWindowArea">
-        <div class="pizzaWindowBody">
-            <div class="pizzaInfo--cancelMobileButton"><i class="ri-arrow-left-line"></i> Voltar</div>
-            <div class="pizzaBig">
-                <img src="" />
-            </div>
-            <div class="pizzaInfo">
-                <h1>--</h1>
-                <div class="pizzaInfo--desc">--</div>
-                <div class="pizzaInfo--sizearea">
-                    <div class="pizzaInfo--sector">Tamanho</div>
-                    <div class="pizzaInfo--sizes">
-                        <div data-key="0" class="pizzaInfo--size">PEQUENA <span>--</span></div>
-                        <div data-key="1" class="pizzaInfo--size">MÉDIO <span>--</span></div>
-                        <div data-key="2" class="pizzaInfo--size selected">GRANDE <span>--</span></div>
-                    </div>
-                </div>
-                <div class="pizzaInfo--pricearea">
-                    <div class="pizzaInfo--sector">Preço</div>
-                    <div class="pizzaInfo--price">
-                        <div class="pizzaInfo--actualPrice">kz --</div>
-                        <div class="pizzaInfo--qtarea">
-                            <button class="pizzaInfo--qtmenos"><i class="ri-subtract-line"></i></button>
-                            <div class="pizzaInfo--qt">1</div>
-                            <button class="pizzaInfo--qtmais"><i class="ri-add-line"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="pizzaInfo--addButton"><i class="ri-shopping-cart-line"></i> Adicionar ao carrinho</div>
-                <div class="pizzaInfo--cancelButton"><i class="ri-close-line"></i> Cancelar</div>
-            </div>
+        <p>Estamos implementando novas funcionalidades e melhorias para servir você melhor. Agradecemos sua paciência!</p>
+        
+        <div class="social-links">
+            <a href="#" class="social-link">📱</a>
+            <a href="#" class="social-link">📧</a>
+            <a href="#" class="social-link">💬</a>
         </div>
     </div>
 
-    
-
-    
-    <script type="text/javascript" src="pizzas.js"></script>
-    <script type="text/javascript" src="script.js"></script>
     <script>
-        // Verifica se o painel já foi exibido
-        if (!localStorage.getItem('welcomeShown')) {
-          // Exibe o painel de boas-vindas com SweetAlert2
-          Swal.fire({
-            title: 'Bem-vindo à Netzage Express!',
-            html: `
-              <p>Pague apenas na entrega e aproveite os melhores perfumes.</p>
-              <p>Como prefere encomendar?</p>
-            `,
-            icon: 'info',
-            showCancelButton: true,
-            confirmButtonText: 'WhatsApp',
-            cancelButtonText: 'Encomendar no Site',
-            confirmButtonColor: '#25D366', /* Verde do WhatsApp */
-            cancelButtonColor: '#D4AF37', /* Dourado para o site */
-            allowOutsideClick: false
-          }).then((result) => {
-            if (result.isConfirmed) {
-              // Redireciona para o WhatsApp
-              window.location.href = 'https://wa.me/244950354803?text=Olá,%20gostaria%20de%20saber%20mais%20sobre%20os%20produtos%20da%20Netzage%20Express.%20Vi%20as%20informações%20no%20site%20e%20quero%20saber%20mais%20sobre%20vendas%20de%20perfumes%20com%20entrega%20grátis%20em%20todas%20as%20regiões%20de%20Luanda.';
-
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-              // Mostra uma mensagem para pedidos no site
-              Swal.fire({
-                title: 'Pedido no site',
-                text: 'Você pode prosseguir com o pedido diretamente no site.',
-                icon: 'success',
-                confirmButtonColor: '#D4AF37',
-              });
+        // Configura o tempo final (8 horas a partir de agora)
+        const countDownDate = new Date().getTime() + (8 * 60 * 60 * 1000);
+        
+        // Atualiza o contador a cada 1 segundo
+        const x = setInterval(function() {
+            // Obtém o tempo atual
+            const now = new Date().getTime();
+            
+            // Calcula a diferença entre agora e o tempo final
+            const distance = countDownDate - now;
+            
+            // Calcula horas, minutos e segundos
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            // Exibe o resultado nos elementos
+            document.getElementById("hours").innerHTML = Math.floor(hours).toString().padStart(2, '0');
+            document.getElementById("minutes").innerHTML = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerHTML = seconds.toString().padStart(2, '0');
+            
+            // Atualiza a barra de progresso
+            const totalTime = 8 * 60 * 60 * 1000;
+            const elapsed = totalTime - distance;
+            const progressPercent = (elapsed / totalTime) * 100;
+            document.getElementById("progress-bar").style.width = progressPercent + "%";
+            
+            // Se o contador terminar, exibe uma mensagem
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("hours").innerHTML = "00";
+                document.getElementById("minutes").innerHTML = "00";
+                document.getElementById("seconds").innerHTML = "00";
+                document.getElementById("progress-bar").style.width = "100%";
+                document.querySelector("h1").innerHTML = "ATUALIZAÇÃO CONCLUÍDA!";
+                document.querySelector("p").innerHTML = "O site está disponível novamente. Atualize a página para acessar a nova versão.";
             }
-          });
-    
-          // Salva no localStorage para não exibir novamente
-          localStorage.setItem('welcomeShown', 'true');
+        }, 1000);
+        
+        // Adiciona efeito de digitação ao texto
+        const texts = [
+            "Implementando novas funcionalidades...",
+            "Otimizando desempenho...",
+            "Atualizando o catálogo...",
+            "Melhorando a experiência do usuário..."
+        ];
+        
+        let currentText = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typingElement = document.querySelectorAll("p")[1];
+        
+        function typeWriter() {
+            const text = texts[currentText];
+            
+            if (isDeleting) {
+                typingElement.textContent = text.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingElement.textContent = text.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            
+            if (!isDeleting && charIndex === text.length) {
+                isDeleting = true;
+                setTimeout(typeWriter, 2000);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                currentText = (currentText + 1) % texts.length;
+                setTimeout(typeWriter, 500);
+            } else {
+                const speed = isDeleting ? 100 : 150;
+                setTimeout(typeWriter, speed);
+            }
         }
-      </script>
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-      <script src="https://apis.google.com/js/api.js"></script>
-      <script src="sweetalert2.min.js"></script>
-
+        
+        // Inicia o efeito de digitação após 3 segundos
+        setTimeout(typeWriter, 3000);
+    </script>
 </body>
 </html>
-
-
-
-
- 
