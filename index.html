@@ -251,9 +251,33 @@
         <div class="update-message">Voltamos em breve com uma experiência melhorada!</div>
     </div>
 
+    <div class="saved-notice" id="savedNotice">Progresso salvo!</div>
+
     <script>
-        // Configura o tempo final (8 horas a partir de agora)
-        const countDownDate = new Date().getTime() + (8 * 60 * 60 * 1000);
+        // Configura o tempo final (8 horas a partir de agora ou recupera do localStorage)
+        let countDownDate;
+        
+        if(localStorage.getItem('countDownEnd')) {
+            countDownDate = parseInt(localStorage.getItem('countDownEnd'));
+            // Verifica se o tempo já expirou
+            if(new Date().getTime() > countDownDate) {
+                resetCountdown();
+            }
+        } else {
+            resetCountdown();
+        }
+        
+        function resetCountdown() {
+            countDownDate = new Date().getTime() + (8 * 60 * 60 * 1000);
+            localStorage.setItem('countDownEnd', countDownDate.toString());
+        }
+        
+        // Mostra aviso de progresso salvo
+        function showSavedNotice() {
+            const notice = document.getElementById('savedNotice');
+            notice.classList.add('show');
+            setTimeout(() => notice.classList.remove('show'), 2000);
+        }
         
         // Atualiza o contador a cada 1 segundo
         const x = setInterval(function() {
@@ -268,10 +292,10 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
             
-            // Exibe o resultado nos elementos
-            document.getElementById("hours").innerHTML = Math.floor(hours).toString().padStart(2, '0');
-            document.getElementById("minutes").innerHTML = minutes.toString().padStart(2, '0');
-            document.getElementById("seconds").innerHTML = seconds.toString().padStart(2, '0');
+            // Atualiza os elementos com efeito visual
+            updateWithEffect('hours', Math.floor(hours).toString().padStart(2, '0'));
+            updateWithEffect('minutes', minutes.toString().padStart(2, '0'));
+            updateWithEffect('seconds', seconds.toString().padStart(2, '0'));
             
             // Atualiza a barra de progresso
             const totalTime = 8 * 60 * 60 * 1000;
@@ -282,34 +306,51 @@
             // Se o contador terminar, exibe uma mensagem
             if (distance < 0) {
                 clearInterval(x);
-                document.getElementById("hours").innerHTML = "00";
-                document.getElementById("minutes").innerHTML = "00";
-                document.getElementById("seconds").innerHTML = "00";
-                document.getElementById("progress-bar").style.width = "100%";
-                document.querySelector("h1").innerHTML = "ATUALIZAÇÃO CONCLUÍDA!";
-                document.getElementById("typing-text").innerHTML = "O site está disponível novamente. Atualize a página para acessar a nova versão.";
-                
-                // Adiciona botão de atualização
-                const refreshBtn = document.createElement('button');
-                refreshBtn.innerHTML = 'Atualizar Página';
-                refreshBtn.style = `
-                    background: #fff;
-                    color: #000;
-                    border: none;
-                    padding: 12px 24px;
-                    border-radius: 30px;
-                    font-weight: bold;
-                    margin-top: 20px;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                `;
-                refreshBtn.onmouseover = () => refreshBtn.style.transform = 'translateY(-2px)';
-                refreshBtn.onmouseout = () => refreshBtn.style.transform = 'none';
-                refreshBtn.onclick = () => location.reload();
-                
-                document.querySelector('.maintenance-container').appendChild(refreshBtn);
+                localStorage.removeItem('countDownEnd');
+                showCompletion();
             }
         }, 1000);
+        
+        function updateWithEffect(id, value) {
+            const element = document.getElementById(id);
+            if(element.textContent !== value) {
+                element.classList.add('flash');
+                element.textContent = value;
+                setTimeout(() => element.classList.remove('flash'), 500);
+            }
+        }
+        
+        function showCompletion() {
+            document.getElementById("hours").textContent = "00";
+            document.getElementById("minutes").textContent = "00";
+            document.getElementById("seconds").textContent = "00";
+            document.getElementById("progress-bar").style.width = "100%";
+            document.querySelector("h1").textContent = "ATUALIZAÇÃO CONCLUÍDA!";
+            document.getElementById("typing-text").textContent = "O site está disponível novamente. Atualize a página para acessar a nova versão.";
+            
+            // Adiciona botão de atualização
+            const refreshBtn = document.createElement('button');
+            refreshBtn.innerHTML = 'Atualizar Página';
+            refreshBtn.style = `
+                background: #fff;
+                color: #000;
+                border: none;
+                padding: 12px 24px;
+                border-radius: 30px;
+                font-weight: bold;
+                margin-top: 20px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            `;
+            refreshBtn.onmouseover = () => refreshBtn.style.transform = 'translateY(-2px)';
+            refreshBtn.onmouseout = () => refreshBtn.style.transform = 'none';
+            refreshBtn.onclick = () => {
+                localStorage.removeItem('countDownEnd');
+                location.reload();
+            };
+            
+            document.querySelector('.maintenance-container').appendChild(refreshBtn);
+        }
         
         // Adiciona efeito de digitação ao texto
         const texts = [
@@ -360,6 +401,6 @@
                 link.style.transform = `translateY(${Math.sin(Date.now()/500 + link.dataset.offset)*5}px)`;
             }, 50);
         });
-    </script>
+    </script>    
 </body>
 </html>
