@@ -1,4 +1,4 @@
-let cart = [];
+   let cart = [];
 let modalQt = 1;
 let modalKey = 0;
 
@@ -251,400 +251,214 @@ searchInput.addEventListener('input', () => {
     }
 });
 
+
+
+  // ... (código anterior permanece o mesmo até a função de finalizar compra)
+
+// Função principal para finalizar compra (versão simplificada)
 c('.cart--finalizar').addEventListener('click', () => {
     if (cart.length === 0) {
-        alert('O carrinho está vazio! Adicione produtos antes de finalizar a compra.');
+        Swal.fire('Carrinho Vazio', 'Adicione produtos antes de finalizar!', 'warning');
         return;
     }
 
-    // Data e hora atuais
     const hoje = new Date();
-    const dataAtual = hoje.toISOString().split('T')[0]; // Formato YYYY-MM-DD
-    const horaAtual = hoje.toTimeString().split(' ')[0]; // Formato HH:MM:SS
-
-    // Recupera dados do usuário armazenados previamente
-    const savedUserData = JSON.parse(localStorage.getItem('userData')) || {};
+    const dataAtual = hoje.toISOString().split('T')[0];
+    const horaAtual = hoje.toTimeString().substring(0, 5);
 
     Swal.fire({
-        title: 'Finalizar Compra',
-        html: `
-            <div style="display: flex; flex-direction: column; gap: 4px; width: 100%; max-width: 400px; margin: 0 auto;">
-                <!-- Nome Completo -->
-                <input type="text" id="nome" class="swal2-input" placeholder="Nome Completo" value="${savedUserData.nome || ''}" style="padding: 10px; font-size: 1rem; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box;">
-
-                <!-- Telefone -->
-                <input type="tel" id="telefone" class="swal2-input" placeholder="Telefone" value="${savedUserData.telefone || ''}" style="padding: 10px; font-size: 1rem; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box;">
-
-                <!-- Localização -->
-                <input type="text" id="localizacao" class="swal2-input" placeholder="Localização" value="${savedUserData.localizacao || ''}" style="padding: 10px; font-size: 1rem; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box;">
-
-                <!-- Referência -->
-                <input type="text" id="referencia" class="swal2-input" placeholder="Referência (opcional)" value="${savedUserData.referencia || ''}" style="padding: 10px; font-size: 1rem; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box;">
-
-                <!-- Data da Entrega -->
-                <input type="date" id="dataEntrega" class="swal2-input" value="${dataAtual}" style="padding: 10px; font-size: 1rem; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box;">
-
-                <!-- Hora da Entrega -->
-                <input type="time" id="horaEntrega" class="swal2-input" value="${horaAtual}" style="padding: 10px; font-size: 1rem; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box;">
+    title: 'Confirmar Pedido',
+    html: `
+        <div class="form-container">
+            <input type="text" id="nome" class="swal2-input" placeholder="Nome Completo*" required>
+            <input type="tel" id="telefone" class="swal2-input" 
+                   placeholder="Telefone* (ex: 954927635)" required
+                   pattern="[0-9]{9}" 
+                   title="Digite 9 dígitos (ex: 954927635)">
+            <input type="text" id="localizacao" class="swal2-input" placeholder="Bairro/Município*" required>
+            <input type="text" id="referencia" class="swal2-input" placeholder="Ponto de Referência">
+            <div class="datetime-container">
+                <input type="date" id="dataEntrega" class="swal2-input" 
+                       value="${dataAtual}" min="${dataAtual}" required>
+                <input type="time" id="horaEntrega" class="swal2-input" 
+                       value="${horaAtual}" min="08:00" max="17:00" required>
             </div>
-        `,
-        showCancelButton: true,
-        cancelButtonText: 'Adicionar mais itens',
-        confirmButtonText: 'Confirmar',
-        preConfirm: () => {
-            const nome = Swal.getPopup().querySelector('#nome').value.trim();
-            const telefone = Swal.getPopup().querySelector('#telefone').value.trim();
-            const localizacao = Swal.getPopup().querySelector('#localizacao').value.trim();
-            const referencia = Swal.getPopup().querySelector('#referencia').value.trim();
-            const dataEntrega = Swal.getPopup().querySelector('#dataEntrega').value.trim();
-            const horaEntrega = Swal.getPopup().querySelector('#horaEntrega').value.trim();
-
-            if (!nome || !telefone || !localizacao || !dataEntrega || !horaEntrega) {
-                Swal.showValidationMessage(`Por favor, preencha todos os campos obrigatórios!`);
-                return;
+            <p style="font-size:12px; color:#666; margin-top:10px;">
+                * Horário de entrega: 8h às 17h | Pagamento na entrega
+            </p>
+        </div>
+    `,
+    showCancelButton: true,
+    confirmButtonText: 'Enviar Pedido',
+    focusConfirm: false,
+    preConfirm: () => {
+        const fields = ['nome', 'telefone', 'localizacao', 'dataEntrega', 'horaEntrega'];
+        const values = {};
+        
+        // Validação de campos obrigatórios
+        for (const field of fields) {
+            const element = Swal.getPopup().querySelector(`#${field}`);
+            values[field] = element.value.trim();
+            if (!values[field]) {
+                Swal.showValidationMessage(`Campo obrigatório: ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}`);
+                return false;
             }
-
-            const dataSelecionada = new Date(dataEntrega);
-            dataSelecionada.setHours(0, 0, 0, 0);
-            const dataHoje = new Date();
-            dataHoje.setHours(0, 0, 0, 0);
-
-            if (dataSelecionada < dataHoje) {
-                Swal.showValidationMessage(`A data de entrega não pode ser anterior à data atual!`);
-                return;
-            }
-
-            if (horaEntrega < "08:00" || horaEntrega > "17:00") {
-                Swal.showValidationMessage(`O horário de entrega deve estar entre 08:00 e 17:00!`);
-                return;
-            }
-
-            return { nome, telefone, localizacao, referencia, dataEntrega, horaEntrega };
-        },
-        customClass: {
-            popup: 'no-scroll'
-        },
-        didOpen: () => {
-            document.querySelector('.swal2-popup').style.overflowY = 'hidden'; // Garantir que não haja barra de rolagem
         }
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const userData = result.value;
 
-            // Agora inclui os dados do carrinho na informação do comprovativo
-            const produtos = cart.map(item => `${item.nome} - ${item.quantidade} x ${item.preco}`).join(', ');
-
-            // Gera o comprovativo
-            gerarComprovativo({
-                ...userData,
-                produtos
-            });
-
-            // Exibe mensagem de sucesso e limpa o carrinho
-            Swal.fire({
-                icon: "success",
-                title: "Compra realizada com sucesso!",
-                text: "O comprovativo foi enviado. Clique em 'OK' para revisar os detalhes no WhatsApp.",
-                confirmButtonText: "OK",
-            }).then((successResult) => {
-                if (successResult.isConfirmed) {
-                    cart = []; // Esvazia o carrinho
-                    localStorage.removeItem('cart'); // Limpa o localStorage
-                    updateCart(); // Atualiza a interface do carrinho
-                    enviarParaWhatsApp(userData); // Redireciona para o WhatsApp
-                }
-            });
+        // Validação forte do telefone
+        const telefoneLimpo = values.telefone.replace(/\D/g, '');
+        if (!/^(9[1-9][0-9]{7}|2[1-9][0-9]{7})$/.test(telefoneLimpo)) {
+            Swal.showValidationMessage('Telefone inválido. Use: 9xxxxxxxx ou 2xxxxxxxx');
+            return false;
         }
-    });
+        values.telefone = telefoneLimpo; // Armazena apenas números
+
+        // Validação de horário comercial (8h-17h)
+        const [hora, minutos] = values.horaEntrega.split(':').map(Number);
+        if (hora < 8 || hora > 17 || (hora === 17 && minutos > 0)) {
+            Swal.showValidationMessage('Horário de entrega deve ser entre 08:00 e 17:00');
+            return false;
+        }
+
+        // Validação se a data é hoje, verifica se horário é futuro
+        const agora = new Date();
+        const dataEntrega = new Date(values.dataEntrega);
+        
+        if (dataEntrega.toDateString() === agora.toDateString()) {
+            const horaAtual = agora.getHours();
+            const minutosAtuais = agora.getMinutes();
+            
+            if (hora < horaAtual || (hora === horaAtual && minutos <= minutosAtuais)) {
+                Swal.showValidationMessage('Para entregas hoje, escolha um horário futuro');
+                return false;
+            }
+        }
+
+        return {
+            ...values,
+            referencia: Swal.getPopup().querySelector('#referencia').value.trim()
+        };
+    }
+}).then((result) => {
+    if (result.isConfirmed) {
+        const userData = result.value;
+        
+        // Confirmação final antes de enviar
+        Swal.fire({
+            title: 'Confirmar envio?',
+            html: `
+                <div style="text-align:left; margin:10px 0">
+                    <p><strong>Data/Hora:</strong> ${userData.dataEntrega} às ${userData.horaEntrega}</p>
+                    <p><strong>Telefone:</strong> ${userData.telefone}</p>
+                    <p><strong>Local:</strong> ${userData.localizacao}</p>
+                </div>
+                <p style="font-size:14px">Você será redirecionado para o WhatsApp</p>
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Enviar para WhatsApp',
+            cancelButtonText: 'Corrigir dados'
+        }).then((res) => {
+            if (res.isConfirmed) {
+                enviarPedidoWhatsApp(userData);
+            }
+        });
+    }
+});
 });
 
-
-
-
-
- // Função para gerar o comprovativo em PDF com jsPDF
-function gerarComprovativo(userData) {
-    const { jsPDF } = window.jspdf; // Acessando a biblioteca jsPDF
-    const doc = new jsPDF();
-
-    // Definindo cores
-    const corFundo = [240, 240, 240]; // Cor de fundo suave (cinza claro)
-    const corTexto = [0, 0, 0]; // Preto para o texto
-    const corDestaque = [255, 215, 0]; // Cor dourada para destaque
-    const corLinha = [200, 200, 200]; // Cor da linha separadora
-
-    // Cor de fundo
-    doc.setFillColor(...corFundo);
-    doc.rect(0, 0, doc.internal.pageSize.width, doc.internal.pageSize.height, 'F');
-
-    // Configurações da logo
-    const logoPath = './images/logo.png'; // Caminho para o logo
-    const logoX = 10; // Posição X do logo
-    const logoY = 15; // Posição Y do logo (ajustada)
-    const logoWidth = 30; // Largura do logo
-    const logoHeight = 30; // Altura do logo
-    try {
-        doc.addImage(logoPath, 'JPEG', logoX, logoY, logoWidth, logoHeight);
-    } catch (error) {
-        console.warn("Logo não carregada:", error); // Mensagem de fallback
-    }
-
-    // Cabeçalho
-    const headerX = logoX + logoWidth + 10; // Ajusta o texto para o lado da logo
-    const headerY = 25; // Alinhamento vertical ajustado
-    doc.setFontSize(24);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(...corDestaque);
-    doc.text('Netzage Express', headerX, headerY);
-
-    // Subtítulo "Comprovativo de Compra"
-    doc.setFontSize(18);
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(...corTexto);
-    doc.text('Comprovativo de Compra - Pagamento na Entrega', headerX, headerY + 10);
-
-    // Linha separadora
-    doc.setDrawColor(...corLinha);
-    doc.line(10, 50, 200, 50);
-
-    // Informações do usuário
-    let yOffset = 60; // Ajustado para iniciar abaixo da linha separadora
-    doc.setFontSize(14);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(...corTexto);
-    doc.text(`Nome: ${userData.nome}`, 10, yOffset);
-    doc.text(`Telefone: ${userData.telefone}`, 10, yOffset + 10);
-    doc.text(`Localização: ${userData.localizacao}`, 10, yOffset + 20);
-    doc.text(`Referência: ${userData.referencia || 'N/A'}`, 10, yOffset + 30);
-    doc.text(`Data de Entrega: ${userData.dataEntrega}`, 10, yOffset + 40);
-    doc.text(`Hora de Entrega: ${userData.horaEntrega}`, 10, yOffset + 50);
-
-    // Linha separadora para itens
-    yOffset += 60;
-    doc.setDrawColor(...corLinha);
-    doc.line(10, yOffset, 200, yOffset);
-    yOffset += 10;
-
-    // Itens do carrinho
-    doc.setFont("helvetica", "bold");
-    doc.text('Itens do Carrinho:', 10, yOffset);
-    yOffset += 10;
-
-    cart.forEach((item, index) => {
-        const pizza = pizzaJson.find(p => p.id === item.id); // Substitua pizzaJson por seus dados
-        const pizzaName = `${pizza.name}`;
-        const pizzaQty = item.qt;
-
-        // Nome e quantidade
-        doc.setFont("helvetica", "normal");
-        doc.text(`${index + 1}. ${pizzaName} - Quantidade: ${pizzaQty}`, 10, yOffset);
-        yOffset += 10;
-
-        // Imagem do produto
-        const img = pizza.image; // Supondo que tenha a imagem do produto
-        if (img) {
-            doc.addImage(img, 'JPEG', 150, yOffset - 10, 40, 40);
-            yOffset += 40;
-        }
-    });
-
-    // Valores totais
-    let subtotal = cart.reduce((acc, item) => {
-        const pizza = pizzaJson.find(p => p.id === item.id);
-        return acc + pizza.price * item.qt;
-    }, 0);
-    let desconto = subtotal * 0.07; // 10% de desconto
-    let total = subtotal - desconto;
-
-    // Linha separadora para valores totais
-    doc.setDrawColor(...corLinha);
-    doc.line(10, yOffset, 200, yOffset);
-    yOffset += 10;
-
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(...corTexto);
-    doc.text(`Subtotal: Kz ${subtotal.toFixed(2)}`, 10, yOffset);
-    yOffset += 10;
-    doc.setFont("helvetica", "normal");
-    doc.text(`Desconto: Kz ${desconto.toFixed(2)}`, 10, yOffset);
-    yOffset += 10;
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(...corDestaque);
-    doc.text(`Total: Kz ${total.toFixed(2)}`, 10, yOffset);
-
-    // Linha separadora para informações de contato
-    yOffset += 20;
-    doc.setDrawColor(...corLinha);
-    doc.line(10, yOffset, 200, yOffset);
-    yOffset += 10;
-
-    // Informações de contato
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(...corTexto);
-    doc.text('E-mail para contato: suporte.netzageexpress@gmail.com', 10, yOffset);
-    yOffset += 10;
-    doc.text('Telefone: +244 938 142 738', 10, yOffset);
+// Função para enviar pedido via WhatsApp
+function enviarPedidoWhatsApp(userData) {
+    const phone = '244954927635'; // Número atualizado
     
-     
-    // Gera o arquivo PDF e converte para Base64
-    const base64pdf = doc.output('datauristring');
+    // Formata os itens do carrinho
+    const itemsList = cart.map((item, i) => {
+        const product = pizzaJson.find(p => p.id === item.id);
+        const size = ['Pequena', 'Média', 'Grande'][item.size];
+        return `➤ ${product.name} (${size}) - ${item.qt} un x ${product.price.toFixed(2)} Kz = ${(product.price * item.qt).toFixed(2)} Kz`;
+    }).join('\n');
 
-    // Envia o PDF por e-mail via EmailJS
-    enviarEmailComprovativo(userData, base64pdf);
-    
-    // Salva o PDF
-    doc.save(`Comprovativo_Compra_${Date.now()}.pdf`);
-
-     
-} 
-  
-// Função para enviar o comprovativo por e-mail usando EmailJS e SweetAlert2
-function enviarEmailComprovativo(userData, pdfUrl) {
-    // Gera a lista de itens do carrinho
-    const cartItems = cart.map((item) => {
-        const pizza = pizzaJson.find((p) => p.id === item.id);
-        return `${pizza.name} - Quantidade: ${item.qt}`;
-    }).join("\n"); // Junta os itens como uma string formatada
-
-    // Calcula o subtotal, desconto e total
-    const subtotal = cart.reduce((acc, item) => {
-        const pizza = pizzaJson.find((p) => p.id === item.id);
-        return acc + pizza.price * item.qt;
-    }, 0);
-    
-    const desconto = subtotal * 0.05; // 7% de desconto
+    // Calcula totais
+    const subtotal = cart.reduce((sum, item) => sum + (pizzaJson.find(p => p.id === item.id).price * item.qt), 0);
+    const desconto = subtotal * 0.05;
     const total = subtotal - desconto;
 
-    // Envia os dados para o EmailJS, incluindo os itens do carrinho, subtotal, desconto e total
-    emailjs
-        .send("NetzageExpress2025", "template_3xsf94e", {
-            nome: userData.nome,
-            telefone: userData.telefone,
-            localizacao: userData.localizacao,
-            referencia: userData.referencia || "N/A", // Caso não haja referência
-            dataEntrega: userData.dataEntrega,
-            horaEntrega: userData.horaEntrega,
-            itensCarrinho: cartItems, // Itens do carrinho
-            subtotal: `Kz ${subtotal.toFixed(2)}`, // Subtotal formatado
-            desconto: `Kz ${desconto.toFixed(2)}`, // Desconto formatado
-            total: `Kz ${total.toFixed(2)}`, // Total formatado
-            pdf_comprovativo: pdfUrl, // Link do PDF gerado
-        })
-        .then((response) => {
-            console.log("Comprovativo enviado com sucesso!", response);
+    // Mensagem formatada para WhatsApp
+    const message = `*PEDIDO NETZAGE EXPRESS* 🍕\n\n` +
+        `*DADOS DO CLIENTE*\n` +
+        `👤 Nome: ${userData.nome}\n` +
+        `📞 Telefone: ${userData.telefone}\n` +
+        `📍 Local: ${userData.localizacao}\n` +
+        `🔹 Referência: ${userData.referencia || 'Não informada'}\n` +
+        `⏰ Entrega: ${userData.dataEntrega} às ${userData.horaEntrega}\n\n` +
+        `*DETALHES DO PEDIDO*\n${itemsList}\n\n` +
+        `*RESUMO DE VALORES*\n` +
+        `Subtotal: ${subtotal.toFixed(2)} Kz\n` +
+        `Desconto (5%): ${desconto.toFixed(2)} Kz\n` +
+        `*TOTAL A PAGAR: ${total.toFixed(2)} Kz*\n\n` +
+        `💵 *Forma de Pagamento:* Dinheiro na entrega\n\n` +
+        `_Pedido gerado em ${new Date().toLocaleString()}_`;
 
-            // Mensagem de sucesso estilizada com SweetAlert2
-            Swal.fire({
-                icon: "success",
-                title: "Compra realizada com sucesso!",
-                text: "O comprovativo foi enviado para o telefone. Clique em 'OK' para continuar e revisar os detalhes no WhatsApp.",
-                confirmButtonText: "OK",
-            }).then((result) => {
-                // Somente redireciona para o WhatsApp se o usuário clicar em "OK"
-                if (result.isConfirmed) {
-                    enviarParaWhatsApp(userData);
-                }
-            });
-        })
-        .catch((error) => {
-            console.error("Erro ao enviar comprovativo por e-mail:", error);
-
-            // Mensagem de erro estilizada com SweetAlert2
-            Swal.fire({
-                icon: "error",
-                title: "Erro ao enviar o comprovativo!",
-                text: "Por favor, tente novamente.",
-                confirmButtonText: "OK",
-            });
-        });
-}
-
-
-// Função para enviar os dados via WhatsApp
-function enviarParaWhatsApp(userData) {
-    const numeroWhatsApp = '950354803'; // Número de destino (com DDI e DDD se necessário)
-    const mensagem = `
-        *Olá, acabei de realizar um pedido e gostaria de confirmar os detalhes da entrega:*
-
-        *Dados do Cliente:*
-        - Nome: ${userData.nome}
-        - Telefone: ${userData.telefone}
-        - Localização: ${userData.localizacao}
-        - Referência: ${userData.referencia || 'N/A'}
-
-        *Detalhes da Entrega:*
-        - Data: ${userData.dataEntrega}
-        - Hora: ${userData.horaEntrega}
-
-        *Itens do Pedido:*
-        ${cart.map((item, index) => {
-            const pizza = pizzaJson.find(p => p.id === item.id);
-            const pizzaSize = item.size === 0 ? 'Pequena' : item.size === 1 ? 'Média' : 'Grande';
-            return `${index + 1}. ${pizza.name} (${pizzaSize}) - Quantidade: ${item.qt}`;
-        }).join('\n')}
-
-        *Resumo do Pedido:*
-        - Total: Kz ${cart.reduce((acc, item) => {
-            const pizza = pizzaJson.find(p => p.id === item.id);
-            return acc + pizza.price * item.qt;
-        }, 0).toFixed(2)}
-
-        Agradeço a confirmação e estou disponível para mais informações, caso necessário. Obrigado!
-    `;
-
-    // Formatação e redirecionamento para WhatsApp
-    const urlWhatsApp = `https://wa.me/244${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
-    window.open(urlWhatsApp, '_blank'); // Abre o WhatsApp em uma nova aba
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- // Seleciona o botão de WhatsApp
-const whatsappBtn = document.getElementById("whatsappBtn");
-
-// Ao clicar no botão, mostra o SweetAlert2 com a pergunta
-whatsappBtn.addEventListener("click", function(event) {
-    event.preventDefault(); // Evita o link de ser clicado diretamente
-
-    // Exibe o SweetAlert2 perguntando se deseja receber ajuda
+    // Abre o WhatsApp
+    const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+    
     Swal.fire({
-        title: 'Deseja receber ajuda no WhatsApp?',
-        text: 'Clique em "Sim" para iniciar a conversa!',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'Sim',
-        cancelButtonText: 'Não',
-        reverseButtons: true
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Mensagem personalizada para enviar no WhatsApp
-            const mensagem = encodeURIComponent('Olá, gostaria de mais informações sobre os produtos ou serviços oferecidos no site.');
+        title: 'Pedido Pronto!',
+        html: `
+            <div style="text-align:center">
+                <p>Clique no botão abaixo para abrir o WhatsApp e enviar seu pedido:</p>
+                <a href="${whatsappUrl}" target="_blank" style="
+                    display: inline-block;
+                    background: #25D366;
+                    color: white;
+                    padding: 10px 20px;
+                    border-radius: 5px;
+                    text-decoration: none;
+                    margin-top: 15px;
+                    font-weight: bold;
+                ">
+                    Abrir WhatsApp
+                </a>
+                <p style="margin-top:20px;font-size:14px;color:#666">Após o envio, aguarde nossa confirmação!</p>
+            </div>
+        `,
+        showConfirmButton: false,
+        allowOutsideClick: false
+    });
 
+    // Limpa o carrinho após envio
+    cart = [];
+    updateCart();
+    saveCartToLocalStorage();
+}
 
-            // Redireciona para o WhatsApp com a mensagem personalizada
-            window.location.href = `https://wa.me/244950354803?text=${mensagem}`;
-        }
+// Botão de ajuda WhatsApp simplificado
+document.getElementById("whatsappBtn").addEventListener("click", function(event) {
+    event.preventDefault();
+    
+    Swal.fire({
+        title: 'Atendimento ao Cliente',
+        html: `
+            <div style="text-align:center">
+                <p>Fale conosco no WhatsApp:</p>
+                <p style="font-size:1.2em;margin:10px 0"><strong>+244 954 927 635</strong></p>
+                <p>Horário de atendimento:</p>
+                <p>Seg-Sex: 08:00 - 20:00</p>
+                <p>Sáb-Dom: 09:00 - 18:00</p>
+                <a href="https://wa.me/244954927635" target="_blank" style="
+                    display: inline-block;
+                    background: #25D366;
+                    color: white;
+                    padding: 8px 15px;
+                    border-radius: 5px;
+                    text-decoration: none;
+                    margin-top: 15px;
+                ">
+                    Abrir Conversa
+                </a>
+            </div>
+        `,
+        showConfirmButton: false,
+        showCloseButton: true
     });
 });
