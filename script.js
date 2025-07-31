@@ -369,7 +369,7 @@ c('.cart--finalizar').addEventListener('click', () => {
 
 // Função para enviar pedido via WhatsApp
 function enviarPedidoWhatsApp(userData) {
-    const phone = '244954927635'; // Número atualizado
+    const phone = '244954827635'; // Número atualizado
     
     // Formata os itens do carrinho
     const itemsList = cart.map((item, i) => {
@@ -384,7 +384,7 @@ function enviarPedidoWhatsApp(userData) {
     const total = subtotal - desconto;
 
     // Mensagem formatada para WhatsApp
-    const message = `*PEDIDO NETZAGE EXPRESS* 🍕\n\n` +
+    const message = `*PEDIDO NETZAGE EXPRESS* \n\n` +
         `*DADOS DO CLIENTE*\n` +
         `👤 Nome: ${userData.nome}\n` +
         `📞 Telefone: ${userData.telefone}\n` +
@@ -445,7 +445,7 @@ document.getElementById("whatsappBtn").addEventListener("click", function(event)
                 <p>Horário de atendimento:</p>
                 <p>Seg-Sex: 08:00 - 20:00</p>
                 <p>Sáb-Dom: 09:00 - 18:00</p>
-                <a href="https://wa.me/244954927635" target="_blank" style="
+                <a href="https://wa.me/244954827635" target="_blank" style="
                     display: inline-block;
                     background: #25D366;
                     color: white;
