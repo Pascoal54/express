@@ -1,9 +1,9 @@
- 
+  
 
 
   document.addEventListener('DOMContentLoaded', function() {
   // Contador regressivo
-  function updateCountdown() {
+  /*function updateCountdown() {
     const now = new Date();
     const endOfDay = new Date();
     endOfDay.setHours(23, 59, 59, 999);
@@ -19,7 +19,7 @@
   }
   
   setInterval(updateCountdown, 1000);
-  updateCountdown();
+  updateCountdown();*/
   
   // Swiper Depoimentos
   const testimonialSwiper = new Swiper('.testimonial-swiper', {
